@@ -1,0 +1,113 @@
+# Default values
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+env: []
+
+image:
+  # -- image repository
+  repository:
+  # -- image tag
+  tag: "latest"
+  # -- image pull policy
+  pullPolicy: "Always"
+
+# -- Container port for the deployment
+containerPort: 80
+
+# -- Secrets required to pull images
+imagePullSecrets: []
+
+# -- Set an override for the prefix of the fullname
+nameOverride: ""
+# -- Set an override for the fullname
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a service account for this release
+  create: true
+  # -- Annotations for the service account
+  annotations: {}
+  # -- The name of the service account. This is automatically generated
+  # if the name is left emtpy.
+  name: ""
+
+# -- Annotations to add to the pod
+podAnnotations: {}
+
+# -- The security context for the pod
+podSecurityContext: {}
+
+# -- The security context for containers
+securityContext: {}
+
+# -- Configure the service. Services of type load balancer will automatically
+# restrict load balancer source ranges to Sky IP addresses.
+service:
+  # -- Enable service
+  enabled: false
+  # -- The service type.
+  type: ClusterIP
+  # -- The service port that is exposed
+  port: 80
+
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- The ingress class name
+  className: "nginx"
+  # -- The annotations for the ingress
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # -- Configure hosts for the ingress
+  hosts: []
+  # -- Configure tls for the ingress
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+autoscaling:
+  # -- Enable autoscaling
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+probes:
+  # -- Enable HTTP health check for /health, otherwise use file /tmp/healthy
+  http: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- Secrets will be mounted as environment variables
+secret: {}
+# e.g. KEY: Value
+
+# -- Config will be mounted as environment variables
+config: {}
+# e.g. KEY: Value
+
+volumeMounts: {}
+# - name: config
+#   mountPath: config.yml
+#   subPath: config.yml
+
+volumes: {}
+# - name: config
+#   items:
+#     - key: config.yml
+#       path: config.yml
+customSecret:
+  # name: mysecret
+podArgs: []
+# - --logfile=/var/log/mylog.log
+# - --secret=mysecret

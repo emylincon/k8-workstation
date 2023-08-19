@@ -1,0 +1,24 @@
+image:
+  repository: ugwuanyi/calc
+  tag: 0.0.0
+  pullPolicy: Always
+
+containerPort: 5000
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 5000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: paylite-sas-checks.kloud8.ixprod-aws.ottlocal.sky
+      paths:
+        - path: /calc
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: ingress-tls
+      hosts:
+        - paylite-sas-checks.kloud8.ixprod-aws.ottlocal.sky
