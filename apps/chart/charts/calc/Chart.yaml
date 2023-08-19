@@ -1,0 +1,10 @@
+apiVersion: v2
+name: calc
+description: A Helm chart for calc for weeklychecks
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+  - name: common
+    repository: "file://../../common"
+    version: 1.0.0
