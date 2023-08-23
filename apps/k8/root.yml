@@ -1,0 +1,65 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: index
+  annotations: {}
+spec:
+  rules:
+    - host: hello-world.info
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: index
+                port:
+                  number: 5003
+
+# https://kubernetes.github.io/ingress-nginx/examples/rewrite/
+# https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: index
+  name: index
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: index
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: index
+    spec:
+      containers:
+        - image: ugwuanyi/apps-root
+          name: index
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: index
+  name: index
+spec:
+  ports:
+    - port: 5003
+      protocol: TCP
+      targetPort: 5003
+  selector:
+    app: index
+  type: ClusterIP
