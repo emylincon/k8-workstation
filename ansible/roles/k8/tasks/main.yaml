@@ -1,0 +1,45 @@
+---
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ project_directory }}"
+    state: directory
+    mode: "0755"
+
+- name: Copy files to directory
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ project_directory }}/{{ item }}"
+  with_items: "{{ files_to_copy }}"
+  tags:
+    - copy
+
+- name: Give insecure permissions to an existing file
+  ansible.builtin.file:
+    path: /var/run/docker
+    owner: ubuntu
+    group: ubuntu
+    recurse: true
+    state: directory
+  tags:
+    - docker
+
+- name: Give perms
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    owner: ubuntu
+    group: ubuntu
+  tags:
+    - docker
+
+- name: Start minikube
+  ansible.builtin.command:
+    cmd: minikube start
+
+- name: Enable minikube ingress
+  ansible.builtin.command:
+    cmd: minikube addons enable ingress
+
+- name: Kubectl appl
+  ansible.builtin.command:
+    cmd: kubectl apply -f '*.yml'
+    chdir: "{{ project_directory }}"

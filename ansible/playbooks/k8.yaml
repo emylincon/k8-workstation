@@ -1,0 +1,8 @@
+---
+
+- hosts: "workstation"
+  become: yes
+  gather_facts: no
+  roles:
+    - role: k8
+  tags: k8

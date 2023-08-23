@@ -1,0 +1,6 @@
+files_to_copy:
+  - calc.yml
+  - greet.yml
+  - root.yml
+
+project_directory: /home/ubuntu/apps
